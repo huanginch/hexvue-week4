@@ -1,0 +1,47 @@
+.productListTitle {
+    color: #06b6d4;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 3em;
+}
+
+.modal-header {
+    background: #075985;
+    color: #fff;
+}
+
+.addProductBtn {
+    background: #4d7c0f;
+    color: #fff;
+    font-weight: bold;
+    font-size: 1.5em;
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+.editProductBtn {
+    background: #4d7c0f;
+    color: #fff;
+    font-weight: bold;
+    font-size: 1.5em;
+    padding: 5px 15px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+.updateProductBtn {
+    background: #4d7c0f;
+    color: #fff;
+}
+
+table thead {
+    background: #064e3b;
+}
+
+table tbody {
+    background: #bae6fd;
+    font-weight: 600;
+}

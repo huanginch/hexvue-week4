@@ -1,0 +1,30 @@
+.login {
+    height: 100vh;
+}
+
+h1 {
+    color : #0e7490;
+    font-size: 3rem;
+}
+
+label {
+    font-size: large;
+}
+
+input {
+    border: 2px solid #bae6fd;
+}
+
+input:focus-visible {
+    outline: none;
+    border: 2px solid #0e7490;
+}
+
+.loginBtn {
+    background: #06b6d4;
+    padding: 10px 20px;
+}
+
+.loginBtn:hover {
+    background: #0e7490;
+}
