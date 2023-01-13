@@ -62,7 +62,7 @@
                                         edit
                                     </span>
                                 </button>
-                                <button type="button" class="btn btn-danger" @click="tempProduct = {...product}; delProduct()">
+                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delCheckModal" @click="tempProduct = {...product}">
                                     <span class="material-symbols-outlined">
                                         delete
                                     </span>
@@ -124,11 +124,11 @@
                                     <div class="mb-3 d-flex justify-content-between">
                                         <div>
                                             <label for="productOriginPrice" class="form-label">原價</label>
-                                            <input v-model="tempProduct.origin_price" type="number" class="form-control" id="productOriginPrice">
+                                            <input v-model.number="tempProduct.origin_price" type="number" min="0" class="form-control" id="productOriginPrice">
                                         </div>
                                         <div>
                                             <label for="productPriice" class="form-label">售價</label>
-                                            <input v-model="tempProduct.price" type="number" class="form-control" id="productPrice">
+                                            <input v-model.number="tempProduct.price" type="number" min="0" class="form-control" id="productPrice">
                                         </div>
                                     </div>
                                     <hr>
@@ -161,7 +161,7 @@
                                             <img v-if="img" :src="img" :alt="index" class="img-fluid mb-2">
                                             <button type="button" class="btn btn-outline-danger" @click="removeOtherImg(index)">刪除</button>
                                         </div>
-                                        <button type="button" class="btn btn-outline-primary" @click="this.tempProduct.imagesUrl.push('');">新增圖片</button>
+                                        <button v-if="showAddImgBtn" type="button" class="btn btn-outline-primary" @click="this.tempProduct.imagesUrl.push('');">新增圖片</button>
                                     </div>
                                 </div>
                             </div>
@@ -170,6 +170,25 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal" @click="clearProductForm">取消</button>
                         <button type="button" class="updateProductBtn btn btn-success" @click="updateProduct">{{ isExist ? "修改產品" : "新增產品" }}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- delete product check Modal -->
+        <div class="modal fade" tabindex="-1" id="delCheckModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">再想一下</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>確定真的要刪除此產品嗎?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">否</button>
+                        <button type="button" class="btn btn-danger" @click="delProduct">是</button>
                     </div>
                 </div>
             </div>
@@ -187,6 +206,7 @@
                         // targetProduct: {},
                         tempProduct: {},
                         isExist: false,
+                        showAddImgBtn: true,
                         url: 'https://vue3-course-api.hexschool.io/v2',
                         path: 'int-hexschool',
                     }
@@ -194,24 +214,32 @@
                 watch: {
                     tempProduct: {
                         handler() {
+                            // if the tempProduct.imagesUrl is undefined, create an empty array
                             if (!this.tempProduct.imagesUrl) {
                                 this.tempProduct.imagesUrl = [];
                             }
+
+                            // limit the number of images to 5
+                            if (this.tempProduct.imagesUrl.length >= 5) {
+                                this.showAddImgBtn = false;
+                            } else {
+                                this.showAddImgBtn = true;
+                            }
                         },
-                        deep: true,
-                    }
+                        deep: true, // watch the object deeply
+                    },
                 },
                 methods: {
+                    // get token
                     checkAuth() {
                         const token = document.cookie.replace(/(?:(?:^|.*;\s*)hexToken\s*\=\s*([^;]*).*$)|^.*$/, "$1");
                         axios.defaults.headers.common['Authorization'] = token;
 
                         axios.post(`${this.url}/api/user/check`)
                             .then((res) => {
-                                console.log(res);
+                                
                             })
                             .catch((err) => {
-                                console.dir(err);
                                 alert("請先登入");
                                 window.location = 'index.html';
                             })
@@ -219,13 +247,13 @@
                     getProducts() {
                         axios.get(`${this.url}/api/${this.path}/admin/products`)
                             .then((res) => {
-                                console.log(res);
                                 this.products = res.data.products;
                             })
                             .catch((err) => {
-                                console.dir(err);
+                                alert(err.response.data.message);
                             })
                     },
+                    // add product or update product (if the product exist)
                     updateProduct() {
 
                         // add product setting
@@ -241,7 +269,6 @@
 
                         axios[http](url, { data: this.tempProduct })
                             .then((res) => {
-                                console.log(res);
                                 alert(res.data.message);
 
                                 // render products again
@@ -252,7 +279,6 @@
                                 productModal.hide();
                             })
                             .catch((err) => {
-                                console.dir(err);
                                 alert(err.response.data.message);
                             })
                     },
@@ -260,17 +286,17 @@
                         console.log("delProduct");
                         axios.delete(`${this.url}/api/${this.path}/admin/product/${this.tempProduct.id}`)
                             .then((res) => {
-                                console.log(res);
                                 alert(res.data.message);
 
                                 // render products again
                                 this.getProducts();
+                                delCheckModal.hide();
                             })
                             .catch((err) => {
-                                console.dir(err);
                                 alert(err.response.data.message);
                             })
                     },
+                    // remove the image from the tempProduct.imagesUrl
                     removeOtherImg(index) {
                         this.tempProduct.imagesUrl.splice(index, 1);
                     },
@@ -283,7 +309,12 @@
                     this.getProducts();
                 },
                 mounted() {
+                    // create modal
                     productModal = new bootstrap.Modal(document.getElementById('updateProduct'), {
+                        keyboard: false
+                    });
+
+                    delCheckModal = new bootstrap.Modal(document.getElementById('delCheckModal'), {
                         keyboard: false
                     });
                 },
