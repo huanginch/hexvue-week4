@@ -172,9 +172,9 @@
                                             <label for="productMainImg" class="form-label">圖片網址</label>
                                             <input v-model="tempProduct.imagesUrl[index]" class="form-control mb-2" type="text" id="productMainImg" placeholder="請輸入圖片連結">
                                             <img v-if="img" :src="img" :alt="index" class="img-fluid mb-2">
-                                            <button type="button" class="btn btn-outline-danger" @click="removeOtherImg(index)">刪除</button>
+                                            <button type="button" class="btn btn-outline-danger w-25" @click="removeOtherImg(index)">刪除</button>
                                         </div>
-                                        <button v-if="showAddImgBtn" type="button" class="btn btn-outline-primary" @click="this.tempProduct.imagesUrl.push('');">新增圖片</button>
+                                        <button v-if="showAddImgBtn" type="button" class="btn btn-outline-primary w-25" @click="this.tempProduct.imagesUrl.push('');">新增圖片</button>
                                     </div>
                                 </div>
                             </div>
