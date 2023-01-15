@@ -261,6 +261,7 @@
                     // open modal
                     openModal(state, product = {}) {
                         if (state === 'new') {
+                            // if the tempProduct.imagesUrl is undefined, create an empty array
                             this.tempProduct = {
                                 imagesUrl: [],
                             };

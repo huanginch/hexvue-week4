@@ -18,11 +18,6 @@ export default {
         },
         tempProduct: {
             handler() {
-                // if the tempProduct.imagesUrl is undefined, create an empty array
-                if (!this.tempProduct.imagesUrl) {
-                    this.tempProduct.imagesUrl = [];
-                }
-
                 // limit the number of images to 5
                 if (this.tempProduct.imagesUrl.length >= 5) {
                     this.showAddImgBtn = false;
