@@ -67,6 +67,7 @@ export default {
         },
         clearProductForm() {
             this.tempProduct = {};
+            this.emitUpdate();
         },
         openModal() {
             this.productModal.show();
