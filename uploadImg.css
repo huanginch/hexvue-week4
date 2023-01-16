@@ -1,0 +1,58 @@
+.login {
+    height: 100vh;
+}
+
+h1 {
+    color : #0e7490;
+    font-size: 3rem;
+}
+
+label {
+    font-size: large;
+}
+
+input {
+    border: 2px solid #bae6fd;
+    width: 50%;
+}
+
+input:focus-visible {
+    outline: none;
+    border: 2px solid #0e7490;
+}
+
+.imgLabel {
+    font-size: large;
+    color: #0e7490;
+    font-weight: bold;
+}
+
+.resultImgUrl {
+    width: 70%;
+}
+
+::-webkit-file-upload-button {
+    display: none;
+}
+
+.custom-file-label {
+    background: #06b6d4;
+    cursor: pointer;
+    color: #fff;
+    padding: 5px 10px;
+}
+
+.custom-file-input {
+    padding: 5px 10px;
+}
+
+.uploadBtn {
+    background: #06b6d4;
+    padding: 10px 20px;
+}
+
+.chooseFileBtn:hover,
+.uploadBtn:hover {
+    background: #0e7490;
+    color: #fff;
+}
