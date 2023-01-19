@@ -14,11 +14,16 @@ export default {
          // product from the parent component is read-only, so we need to create a tempProduct to store the product data
         // the prouct will be changed when the productModal is shown (depands on the edit target or the add target)
         product() {
-            this.tempProduct = { ...this.product };
+            this.tempProduct = JSON.parse(JSON.stringify(this.product)); // deep copy
         },
         tempProduct: {
             handler() {
                 // limit the number of images to 5
+                if (this.tempProduct.imagesUrl === undefined) {
+                    this.tempProduct.imagesUrl = [];
+                    return;
+                }
+                
                 if (this.tempProduct.imagesUrl.length >= 5) {
                     this.showAddImgBtn = false;
                 } else {

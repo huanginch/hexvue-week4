@@ -11,7 +11,7 @@ export default {
     },
     watch: {
         product() {
-            this.tempProduct = { ...this.product };
+            this.tempProduct = JSON.parse(JSON.stringify(this.product)); // deep copy
         },
     },
     methods: {
